@@ -1,0 +1,440 @@
+openapi: 3.0.0
+info:
+  description: API specification for SuperBlog microservice
+  version: v3
+  title: SuperBlog microservice API
+servers:
+  - url: http://localhost:8080/
+paths:
+  /articles:
+    get:
+      tags:
+        - getArticleList
+      summary: Get all articles
+      operationId: getArticleList
+      responses:
+        '200':
+          description: Get article list successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleListResponse'
+    post:
+      tags:
+        - createArticle
+      summary: Create article
+      operationId: createArticle
+      requestBody:
+        description: Create article
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequest'
+      responses:
+        '200':
+          description: Create article successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /articles/{articleId}:
+    delete:
+      tags:
+        - deleteArticleById
+      summary: Delete article by id
+      operationId: deleteArticleById
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Delete article
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/DeleteArticleRequest'
+      responses:
+        '200':
+          description: Delete article successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectDeleteSuccessResponse'
+    put:
+      tags:
+        - updateArticle
+      summary: Update article
+      operationId: updateArticle
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Update article
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequest'
+      responses:
+        '200':
+          description: Delete article successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+    get:
+      tags:
+        - getArticleById
+      summary: Get article by id
+      operationId: getArticleById
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Get article successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleResponseModel'
+  /articles/{articleId}/comments:
+    post:
+      tags:
+        - createComment
+      summary: Create comment
+      operationId: createComment
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Create commment
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        '200':
+          description: Create comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /articles/{articleId}/comments/{commentId}:
+    delete:
+      tags:
+        - deleteComment
+      summary: Delete comment
+      operationId: deleteComment
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+        - name: commentId
+          in: path
+          description: Comment id
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Delete comment
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/DeleteCommentRequest'
+      responses:
+        '200':
+          description: Delete comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectDeleteSuccessResponse'
+    put:
+      tags:
+        - updateComment
+      summary: Upadte comment
+      operationId: updateComment
+      parameters:
+        - name: articleId
+          in: path
+          description: Article id
+          required: true
+          schema:
+            type: string
+            format: string
+        - name: commentId
+          in: path
+          description: Comment id
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        description: Update comment
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/UpdateCommentRequest'
+      responses:
+        '200':
+          description: Update comment successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUpdateSuccessResponse'
+  /categories:
+    post:
+      tags:
+        - createCategory
+      summary: Create category
+      operationId: createCategory
+      requestBody:
+        description: Create category
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+      responses:
+        '200':
+          description: Create category successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /users:
+    get:
+      tags:
+        - getUserList
+      summary: Get all users
+      operationId: getUserList
+      responses:
+        '200':
+          description: Get user list successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+
+    post:
+      tags:
+        - createUser
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        description: Create user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: Create user successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectCreationSuccessResponse'
+  /users/find-by-email:
+    get:
+      tags:
+        - search user by email
+      summary: Search user by email
+      operationId: findUserByEmail
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Search user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+components:
+  schemas:
+    UserListResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponseModel'
+    UserResponseModel:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        image:
+          type: string
+        phone:
+          type: string
+    ArticleListResponse:
+      type: object
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleResponseModel'
+    ArticleResponseModel:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorName:
+          type: string
+        authorId:
+          type: string
+        comment:
+          type: array
+        category:
+          type: array
+    CreateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        authorName:
+          type: string
+        categoryNames:
+          type: array
+    DeleteArticleRequest:
+      type: object
+      properties:
+        authorId:
+          type: string
+    UpdateArticleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+    DeleteCommentRequest:
+      type: object
+      properties:
+        userEmail:
+          type: string
+        authorId:
+          type: string
+    UpdateCommentRequest:
+      type: object
+      properties:
+        userEmail:
+          type: string
+        authorId:
+          type: string
+        comment:
+          type: string
+    CreateUserRequest:
+      type: object
+      required:
+        - name
+        - email
+        - address
+        - phone
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        image:
+          type: string
+          default: "https://firebasestorage.googleapis.com/v0/b/api-images-ec7ab.appspot.com/o/images%2Fpngtree-man-default-avatar-png-image_2813122.jpg?alt=media&token=d77e17e0-5240-4bf3-b91a-25bd0076b9c9"
+        phone:
+          type: string
+    CreateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    CreateCommentRequest:
+      type: object
+      properties:
+        comment:
+          type: string
+        userName:
+          type: string
+        userEmail:
+          type: string
+    ObjectCreationSuccessResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        responseCode:
+          type: integer
+    ObjectDeleteSuccessResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+    ObjectUpdateSuccessResponse:
+      type: object
+      properties:
+        responseCode:
+          type: integer
+    ApiError:
+      type: object
+      properties:
+        faults:
+          type: array
+          items:
+            $ref: "#/components/schemas/Fault"
+        responseCode:
+          type: integer
+    Fault:
+      type: object
+      properties:
+        internalMessage:
+          type: string
+        code:
+          type: integer
+        userMessage:
+          type: string
+
+  examples:
+    InternalServerError:
+      value:
+        responseCode: 500
+        faults:
+          -:
+          userMessage: There're some error when processing this request. Please retry again or contact the site administrator for supporting
+          internalMessage: Internal server error
+          code: 1000
+          responseCode: 500
