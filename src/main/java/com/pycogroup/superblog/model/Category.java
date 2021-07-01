@@ -17,7 +17,6 @@ public class Category {
     @Setter
     @Getter
     private ObjectId id;
-
     @Getter
     @Setter
     private String name;
